@@ -1,6 +1,6 @@
 ## Effect of a safe and dignified burial intervention on Ebola virus transmission in the eastern Democratic Republic of the Congo, 2018-2019
 ## Repository of datasets and R scripts
-August 2023
+March 2025
 
 Main author: Francesco Checchi (London School of Hygiene and Tropical Medicine), francesco.checchi@lshtm.ac.uk
 
