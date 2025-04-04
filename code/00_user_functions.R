@@ -129,7 +129,7 @@ f_dose <- function(fit_f, data_f, exposure_f, confounders_f,
         geom_segment(x = 0.1, xend = 0.1, y = 0, yend = 0.5, 
           arrow = arrow(ends = "both", type = "open", length = unit(0.3, "cm")), 
           colour = colours[2]) +
-        annotate("text", x = 0.27, y = 0.25, label = "decreasing transmission", 
+        annotate("text", x = 0.3, y = 0.25, label = "decreasing transmission", 
           colour = colours[2])
     }
 
@@ -149,7 +149,7 @@ f_dose <- function(fit_f, data_f, exposure_f, confounders_f,
         geom_segment(x = 0.1, xend = 0.1, y = 0, yend = 1, 
           arrow = arrow(ends = "both", type = "open", length = unit(0.3, "cm")), 
           colour = colours[2]) +
-        annotate("text", x = 0.27, y = 0.5, label="towards epidemic extinction", 
+        annotate("text", x = 0.3, y = 0.5, label="towards epidemic extinction", 
           colour = colours[2])
     }
         

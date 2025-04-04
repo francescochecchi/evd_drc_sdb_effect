@@ -511,7 +511,7 @@
 
     # Incidence change
     out <- f_gps(tsw_inc_r_sdb_to_pop,exposures[3],confounders_inc_r_sdb_to_pop, 
-      palette_cb[13])
+      palette_cb[5])
     x <- out$dataset
     colnames(x) <- gsub("gps", "gps_r_sdb_to_pop", colnames(x))
     tsw_inc_r_sdb_to_pop <- merge(
@@ -540,7 +540,7 @@
         
     # Reproduction number
     out <- f_gps(tsw_rn_r_sdb_to_pop, exposures[6], confounders_rn_r_sdb_to_pop, 
-      palette_cb[13])
+      palette_cb[11])
     x <- out$dataset    
     colnames(x) <- gsub("gps", "gps_r_sdb_to_pop", colnames(x))
     tsw_rn_r_sdb_to_pop <- merge(

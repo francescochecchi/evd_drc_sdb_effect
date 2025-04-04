@@ -630,9 +630,10 @@
     flextable::save_as_rtf(out, 
       path = paste(dir_output, "/out_glmm_rn_r_sdb_to_pop_hi.rtf", sep =""))
       
-    # Add interaction: exposure with proportion timely
+    # Add interaction: exposure with proportion timely and successful
     form_new <- update(form_curr, ~ . + 
-        p_success_curr : p_timely_curr_cat)
+        r_sdb_to_pop_curr : p_timely_curr_cat + 
+        r_sdb_to_pop_curr : p_success_curr)
     fit_new <- update(fit_curr, formula = form_new)
     model_parameters(fit_new)
     AIC(fit_new)
@@ -641,8 +642,10 @@
       form_curr <- form_new
         
     # Save model with interaction
-    fit_rn_r_sdb_to_pop_hi_int <- fit_curr
+    fit_rn_r_sdb_to_pop_hi <- fit_curr
     x <- model_parameters(fit_curr) 
+    out <- flextable(x[, c("Parameter", "Coefficient", "CI_low", "CI_high", "p",
+      "Effects")])
     out <- flextable(x[, c("Parameter", "Coefficient", "CI_low", "CI_high", "p",
       "Effects")])
     out <- set_formatter(out, 
@@ -792,9 +795,10 @@
     flextable::save_as_rtf(out, 
       path = paste(dir_output, "/out_glmm_rn_r_sdb_to_pop_pw.rtf", sep =""))
       
-    # Add interaction: exposure with proportion timely
+    # Add interaction: exposure with proportion timely and successful
     form_new <- update(form_curr, ~ . + 
-        p_success_curr : p_timely_curr_cat)
+        r_sdb_to_pop_curr : p_timely_curr_cat + 
+        r_sdb_to_pop_curr : p_success_curr)
     fit_new <- update(fit_curr, formula = form_new)
     model_parameters(fit_new)
     AIC(fit_new)
