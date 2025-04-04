@@ -44,9 +44,9 @@ f_diag_lmm <- function(fit_f = fit) {
 ### Function to compute a dose-response function and produce a plot
 #...............................................................................
 
-f_dose <- function(fit_f, data_f, exposure_f, confounders_f,method_adj_f = "hi",
+f_dose <- function(fit_f, data_f, exposure_f, confounders_f,
   f_gps_lite_f = f_gps_lite, outcome_f = "inc", palette_f = palette_cb,
-  method_gps_f = "lm") {
+  method_gps_f = "lm", method_adj_f = "hi") {
 
     # Specify levels of the exposure that the function is evaluated at    
     exp_levels <- seq(0, 1, by = 0.05)    
@@ -61,8 +61,8 @@ f_dose <- function(fit_f, data_f, exposure_f, confounders_f,method_adj_f = "hi",
 
     # Fit GPS exposure model again for Hirano-Imbens method
     if (method_adj_f == "hi") {
-      fit_exp <- f_gps_lite_f(data_f, exposure_f, confounders_f, 
-        method_f == method_gps_f)
+      fit_exp <- f_gps_lite_f(method_gps_f = method_gps_f, data_f = data_f,
+        exposure_f = exposure_f, confounders_f = confounders_f)
     }
     
     # Prepare output dose-response dataset
@@ -213,12 +213,13 @@ f_glmm <- function(vars_f, data_f, wt_f, window_transm_f) {
     # https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5969262/#sim7615-bib-0003 
 #...............................................................................
 
-f_gps <- function(data_f, exposure_f, confounders_f, colour_f, method_f= "lm") {
+f_gps <- function(data_f, exposure_f, confounders_f, colour_f, 
+  method_gps_f= "lm") {
 
   #...................................
   ## Compute Generalised Propensity Scores
     
-  if (method_f == "lm") {
+  if (method_gps_f == "lm") {
     # Define formula for exposure as a function of confounders
     formula_exp <- formula(paste(exposure_f," ~ ",
       paste(confounders_f, collapse = " + "), "+ (1 | hz)"))
@@ -232,7 +233,7 @@ f_gps <- function(data_f, exposure_f, confounders_f, colour_f, method_f= "lm") {
     mean = fitted.values(fit_exp), sd = summary(fit_exp)$sigma)
   }
   
-  if (method_f == "gam") {
+  if (method_gps_f == "gam") {
     # Figure out which confounders have enough unique values for a GAM model
     x <- sapply(confounders_f, function(xx) {length(unique(data_f[, xx])) > 15})
 
@@ -299,12 +300,12 @@ f_gps <- function(data_f, exposure_f, confounders_f, colour_f, method_f= "lm") {
     # For each exposure_f quantile...
     for (k in levels(data_f$exp_q)) {
       # compute GPS using exposure model by fixing exposure to quantile median
-      if (method_f == "lm") {
+      if (method_gps_f == "lm") {
         data_f$gps_mid <- dnorm(x = rep(exp_mids[exp_mids$exp_q == k, "median"],
           nrow(data_f)), mean = fitted.values(fit_exp),
           sd = summary(fit_exp)$sigma)
       }
-      if (method_f == "gam") {
+      if (method_gps_f == "gam") {
         data_f$gps_mid <- dnorm(x = rep(exp_mids[exp_mids$exp_q == k, "median"],
           nrow(data_f)), mean = pred$fit, sd = pred$se.fit)
       }
@@ -464,9 +465,10 @@ f_gps <- function(data_f, exposure_f, confounders_f, colour_f, method_f= "lm") {
 ### Function to fit and output Generalised Propensity Scores model only
 #...............................................................................
 
-f_gps_lite <- function(data_f, exposure_f, confounders_f, method_f = "lm") {
+f_gps_lite <- function(data_f = data_f, exposure_f = exposure_f, 
+  confounders_f = confounders_f, method_gps_f = "lm") {
   
-  if (method_f == "lm") {
+  if (method_gps_f == "lm") {
     # Define formula for exposure as a function of confounders
     formula_exp <- formula(paste(exposure_f," ~ ",
       paste(confounders_f, collapse = " + "), "+ (1 | hz)"))
@@ -476,7 +478,7 @@ f_gps_lite <- function(data_f, exposure_f, confounders_f, method_f = "lm") {
     fit_exp <- lmer(formula = formula_exp, data = data_f)
   }
   
-  if (method_f == "gam") {
+  if (method_gps_f == "gam") {
     # Figure out which confounders have enough unique values for a GAM model
     x <- sapply(confounders_f, function(xx) {length(unique(data_f[, xx])) > 15})
 

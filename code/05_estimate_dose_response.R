@@ -25,7 +25,7 @@
     # Compute dose-response function
     out <- f_dose(fit_f = fit_inc_p_success_hi, data_f = tsw_inc_p_success,
       exposure_f = exposures[1], confounders_f = confounders_inc_p_success,
-      outcome_f = "inc", method = "hi")
+      outcome_f = "inc", method_adj_f = "hi", method_gps_f = "lm")
     
     # Save plot and estimates
     plot_inc_hi <- out$plot
@@ -42,7 +42,7 @@
     # Compute dose-response function
     out <- f_dose(fit_f = fit_inc_p_success_hi_int, data_f = tsw_inc_p_success,
       exposure_f = exposures[1], confounders_f = confounders_inc_p_success,
-      outcome_f = "inc", method = "hi")
+      outcome_f = "inc", method_adj_f = "hi")
     
     # Save plot and estimates
     plot_inc_hi_int <- out$plot
@@ -59,7 +59,7 @@
     # Compute dose-response function
     out <- f_dose(fit_f = fit_inc_p_success_pw, data_f = tsw_inc_p_success,
       exposure_f = exposures[1], confounders_f = confounders_inc_p_success,
-      outcome_f = "inc", method = "pw")
+      outcome_f = "inc", method_adj_f = "pw")
     
     # Save plot and estimates
     plot_inc_pw <- out$plot
@@ -75,7 +75,7 @@
     # Compute dose-response function
     out <- f_dose(fit_f = fit_inc_p_success_pw_int, data_f = tsw_inc_p_success,
       exposure_f = exposures[1], confounders_f = confounders_inc_p_success,
-      outcome_f = "inc", method = "pw")
+      outcome_f = "inc", method_adj_f = "pw")
     
     # Save plot and estimates
     plot_inc_pw_int <- out$plot
@@ -96,7 +96,7 @@
     # Compute dose-response function
     out <- f_dose(fit_f = fit_rn_p_success_hi, data_f = tsw_rn_p_success,
       exposure_f = exposures[4], confounders_f = confounders_rn_p_success,
-      outcome_f = "rn", method = "hi")
+      outcome_f = "rn", method_adj_f = "hi")
     
     # Save plot and estimates
     plot_rn_hi <- out$plot
@@ -112,7 +112,7 @@
     # Compute dose-response function
     out <- f_dose(fit_f = fit_rn_p_success_hi_int, data_f = tsw_rn_p_success,
       exposure_f = exposures[4], confounders_f = confounders_rn_p_success,
-      outcome_f = "rn", method = "hi")
+      outcome_f = "rn", method_adj_f = "hi")
     
     # Save plot and estimates
     plot_rn_hi_int <- out$plot
@@ -122,15 +122,14 @@
     write.csv(out$out, paste(dir_output, 
       "/out_dose_resp_rn_p_success_hi_int.csv", sep = ""), row.names = F)    
     
-     
-    
+
   #...................................
   ## Propensity weights method
     
     # Compute dose-response function
     out <- f_dose(fit_f = fit_rn_p_success_pw, data_f = tsw_rn_p_success,
       exposure_f = exposures[4], confounders_f = confounders_rn_p_success,
-      outcome_f = "rn", method = "pw")
+      outcome_f = "rn", method_adj_f = "pw")
     
     # Save plot and estimates
     plot_rn_pw <- out$plot
@@ -146,7 +145,7 @@
     # Compute dose-response function
     out <- f_dose(fit_f = fit_rn_p_success_pw_int, data_f = tsw_rn_p_success,
       exposure_f = exposures[4], confounders_f = confounders_rn_p_success,
-      outcome_f = "rn", method = "pw")
+      outcome_f = "rn", method_adj_f = "pw")
     
     # Save plot and estimates
     plot_rn_pw_int <- out$plot
