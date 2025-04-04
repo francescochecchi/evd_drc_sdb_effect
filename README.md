@@ -18,14 +18,13 @@ The repository consists of three folders:
 * folder `/output` is where the scripts will save output datasets, documents and figures. The folder has been pre-loaded with the outputs, but when the analysis is re-run these will automatically be replaced with the new outputs.
 
 ### Description of the R scripts
-* `sdb_effect_00_control_script.R` is the only script required to run the analysis without changes. This script installs and loads required R packages, sets needed parameters, sources functions, reads datasets and then sources all the other scripts in order. Altogether, the entire analysis should complete within 5-10 minutes on a standard laptop. You should interact with the other R scripts only if they need to be changed, or if a specific section of the analysis needs to be done.
-* `sdb_effect_00_user_functions.R` contains all of the bespoke functions written for this analysis, which will be then called by the other R scripts.
-* `sdb_effect_01_prepare_data.R` processes and merges together all the datasets, creating exposures (SDB timeliness and successfulness), transmission outcomes (change in incidence over adjacent time windows and effective reproduction number, the latter estimated within this script) and confounder variables. It also generates a few descriptive tables and graphs.
-* `sdb_effect_02_compute_propensity_scores.R` explores different lags, time windows and categorical versus continuous forms of key variables. For each transmission outcome and exposure, it then computes propensity scores, analyses and graphs resulting confounder balance, and readies dataset for PS-adjusted analysis.
-* `sdb_effect_03_estimate_effect_incidence.R` fits binomial and linear models to estimate the effect of the two exposures on the change in incidence outcome, using two methods of propensity score adjustment and also adding other confounders to the models. The final model coefficients are the main output.
-* `sdb_effect_04_estimate_effect_reff.R` does the same as the above code, but for the other transmission outcome, namely the effective reproduction number.
-* `sdb_effect_05_estimate_dose_response.R` computes and graphs the dose-response associations between SDB successfulness and each of the transmission outcomes.
-* `sdb_effect_99_junkyard.R` contains unneeded or partly developed R functions, not fully tested. In particular, we attempted multivariate propensity score estimation with two simultaneous exposures.
+* `00_control_script.R` is the only script required to run the analysis without changes. This script installs and loads required R packages, sets needed parameters, sources functions, reads datasets and then sources all the other scripts in order. Altogether, the entire analysis should complete within 5-10 minutes on a standard laptop. You should interact with the other R scripts only if they need to be changed, or if a specific section of the analysis needs to be done.
+* `00_user_functions.R` contains all of the bespoke functions written for this analysis, which will be then called by the other R scripts.
+* `01_prepare_data.R` processes and merges together all the datasets, creating exposures (SDB timeliness and successfulness), transmission outcomes (change in incidence over adjacent time windows and effective reproduction number, the latter estimated within this script) and confounder variables. It also generates a few descriptive tables and graphs.
+* `02_compute_propensity_scores.R` explores different lags, time windows and categorical versus continuous forms of key variables. For each transmission outcome and exposure, it then computes propensity scores, analyses and graphs resulting confounder balance, and readies dataset for PS-adjusted analysis.
+* `03_estimate_effect_incidence.R` fits binomial and linear models to estimate the effect of the two exposures on the change in incidence outcome, using two methods of propensity score adjustment and also adding other confounders to the models. The final model coefficients are the main output.
+* `04_estimate_effect_reff.R` does the same as the above code, but for the other transmission outcome, namely the effective reproduction number.
+* `05_estimate_dose_response.R` computes and graphs the dose-response associations between SDB successfulness and each of the transmission outcomes.
 
 
 ### How to replicate the analysis
