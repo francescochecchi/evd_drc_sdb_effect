@@ -126,7 +126,7 @@
       labs(fill = "case type:  ")
 
     # Save plot
-    ggsave(paste0(dir_output, "/out_hz_epicurves1.png"), height = 28, 
+    ggsave(paste0(dir_output, "/out_hz_epicurves1.pdf"), height = 28, 
       width = 22, units = "cm", dpi = "print")
 
   # #...................................   
@@ -171,7 +171,7 @@
   #     labs(colour = "")
   # 
   #   # Save plot
-  #   ggsave(paste0(dir_output, "/out_hz_epicurves2.png"), height = 28, 
+  #   ggsave(paste0(dir_output, "/out_hz_epicurves2.pdf"), height = 28, 
   #     width = 22, units = "cm", dpi = "print")
     
     
@@ -344,7 +344,7 @@
         colour = palette_cb[5] )
 
     # Save plot
-    ggsave(paste(dir_output, "/out_rn_dist_by_hz.png", sep = ""), 
+    ggsave(paste(dir_output, "/out_rn_dist_by_hz.pdf", sep = ""), 
       height = 15, width = 23, units = "cm", dpi = "print")
     
   #...................................
@@ -370,7 +370,7 @@
         date_breaks = "2 months", date_labels = "%b-%Y" )
 
     # Save plot
-    ggsave(paste(dir_output, "/out_rn_hz_evolution_day.png", sep = ""), 
+    ggsave(paste(dir_output, "/out_rn_hz_evolution_day.pdf", sep = ""), 
       height = 22, width = 22, units = "cm", dpi = "print")
 
   #...................................
@@ -398,7 +398,7 @@
         date_breaks = "2 months", date_labels = "%b-%Y" )
 
     # Save plot
-    ggsave(paste(dir_output, "/out_rn_hz_evolution_interval.png", sep = ""), 
+    ggsave(paste(dir_output, "/out_rn_hz_evolution_interval.pdf", sep = ""), 
       height = 22, width = 22, units = "cm", dpi = "print")
         
 #...............................................................................     
@@ -448,7 +448,7 @@
         date_breaks = "2 months", date_labels = "%b-%Y" )
 
     # Save plot
-    ggsave(paste(dir_output, "/out_inc_hz_evolution.png", sep = ""), height =25, 
+    ggsave(paste(dir_output, "/out_inc_hz_evolution.pdf", sep = ""), height =25, 
       width = 22, units = "cm", dpi = "print")
 
     
@@ -478,6 +478,25 @@
       sdb_dataset[which(sdb_dataset$n_outcome == 1 & 
         sdb_dataset$outcome_lshtm == "failure"), "n_success"] <- 0 
 
+      # identify components of success
+      sdb_dataset$n_secured <- NA
+      sdb_dataset[which(sdb_dataset$n_outcome == 1 & 
+        sdb_dataset$secured_body == "yes"), "n_secured"] <- 1 
+      sdb_dataset[which(sdb_dataset$n_outcome == 1 & 
+        sdb_dataset$secured_body != "yes"), "n_secured"] <- 0 
+
+      sdb_dataset$n_disinfected <- NA
+      sdb_dataset[which(sdb_dataset$n_outcome == 1 & 
+        sdb_dataset$disinfected_site == "yes"), "n_disinfected"] <- 1 
+      sdb_dataset[which(sdb_dataset$n_outcome == 1 & 
+        sdb_dataset$disinfected_site != "yes"), "n_disinfected"] <- 0 
+
+      sdb_dataset$n_specimen <- NA
+      sdb_dataset[which(sdb_dataset$n_outcome == 1 & 
+        sdb_dataset$specimen_collected == "yes"), "n_specimen"] <- 1 
+      sdb_dataset[which(sdb_dataset$n_outcome == 1 & 
+        sdb_dataset$specimen_collected != "yes"), "n_specimen"] <- 0 
+                  
     # Timely SDBs (delay < 24h)
       # identify number of SDBs with information on delay
       sdb_dataset$n_delay <- ifelse(sdb_dataset$delay_sdb %in% 
@@ -515,18 +534,18 @@
     colnames(df) <- c("body secured", "site disinfected", 
       "decedent buried")
     plot <- ggvenn(df, fill_color = palette_cb[c(2,8,14)], fill_alpha = 0.3)
-    ggsave(paste(dir_output, "/out_venn_sdb_comps.png", sep = ""), height = 20, 
+    ggsave(paste(dir_output, "/out_venn_sdb_comps.pdf", sep = ""), height = 20, 
       width = 25, units = "cm", dpi = "print")
     
     # Aggregate by time interval
     sdb_w <- aggregate(sdb_dataset[ , c("n_sdb_all", "n_outcome", "n_success", 
-      "n_delay", "n_timely")], 
+      "n_delay", "n_timely", "n_secured", "n_disinfected", "n_specimen")], 
       by = sdb_dataset[, c("hz", "epi_year", "epi_week")], FUN = sum, na.rm = T)
     if (t_overall == 2) {
       sdb_w$weeks1 <- sdb_w$epi_year * 100 + sdb_w$epi_week
       sdb_w <- merge(sdb_w, intervals, by = "weeks1", all.x = T)
       sdb_w <- aggregate(sdb_w[ , c("n_sdb_all", "n_outcome", "n_success", 
-        "n_delay", "n_timely")], 
+        "n_delay", "n_timely", "n_secured", "n_disinfected", "n_specimen")], 
         by = sdb_w[, c("hz", "weeks2")], FUN = sum, na.rm = T)
       colnames(sdb_w)[colnames(sdb_w) == "weeks2"] <- "weeks"
       sdb_w$epi_year <- floor(sdb_w$weeks / 100)
@@ -790,7 +809,7 @@
         data = txt_n_sdb_unk, colour = palette_cb[12], hjust = 0, size = 2.5)
     
     # Save plot
-    ggsave(paste(dir_output, "/out_sdb_coverage.png", sep = ""), height = 23, 
+    ggsave(paste(dir_output, "/out_sdb_coverage.pdf", sep = ""), height = 23, 
       width = 22, units = "cm", dpi = "print")
 
 
@@ -814,7 +833,7 @@
       facet_wrap(.~province, ncol = 2)
     
     # Save plot
-    ggsave(paste(dir_output, "/out_sdb_cases_corr.png", sep = ""), height = 15, 
+    ggsave(paste(dir_output, "/out_sdb_cases_corr.pdf", sep = ""), height = 15, 
       width = 25, units = "cm", dpi = "print")
       
 
@@ -998,7 +1017,7 @@
           date_breaks = "2 months", date_labels = "%b-%Y" ) +
         scale_y_continuous(labels = percent) +
         scale_size_continuous("number of cases with known vaccination status")
-      ggsave(paste(dir_output, "/out_vaxcov_by_hz.png", sep = ""),
+      ggsave(paste(dir_output, "/out_vaxcov_by_hz.pdf", sep = ""),
         height = 23, width = 22, units = "cm", dpi = "print")
   
       # Compute VCP by time window and lag of interest
@@ -1080,7 +1099,7 @@
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
     # Save plot
-    ggsave(paste(dir_output, "/out_vaxcov_by_province.png", sep = ""), 
+    ggsave(paste(dir_output, "/out_vaxcov_by_province.pdf", sep = ""), 
       height = 15, width = 20, units = "cm", dpi = "print")
 
     
